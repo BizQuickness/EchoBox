@@ -78,7 +78,7 @@ Create a service file to run the script in the background automatically:
 sudo nano /etc/systemd/system/echobox.service
 ```
 
-Paste the following configuration. ⚠️ IMPORTANT: Replace pi with your actual Raspberry Pi username if it is different!
+Paste the following configuration. ⚠️ IMPORTANT: Replace `pi` with your actual Raspberry Pi username if it is different!
 Ini, TOML
 ```
 [Unit]
