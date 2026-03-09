@@ -51,6 +51,7 @@ sudo apt install python3 python3-pip python3-venv -y
 ### 2. Prepare the Environment
 Create a dedicated folder for the script and initialize a Python virtual environment:
 bash
+
 mkdir ~/echobox
 cd ~/echobox
 python3 -m venv venv
@@ -60,10 +61,12 @@ pip install meshtastic pubsub
 ### 3. Add the Script
 Create your Python file and paste the echobox.py code into it:
 bash
+
 nano echobox.py
 (Save and exit: Ctrl+O, Enter, Ctrl+X)
 
 Test it manually to ensure it connects (optional):
 bash
+
 python3 echobox.py
 (Press Ctrl+C to stop the manual test).
