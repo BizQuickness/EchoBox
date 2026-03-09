@@ -49,7 +49,6 @@ sudo apt update
 sudo apt install python3 python3-pip python3-venv -y
 ```
 
-
 ### 2. Prepare the Environment
 Create a dedicated folder for the script and initialize a Python virtual environment:
 ```bash
@@ -59,7 +58,6 @@ python3 -m venv venv
 source venv/bin/activate
 pip install meshtastic pubsub
 ```
-
 
 ### 3. Add the Script
 Create your Python file and paste the echobox.py code into it:
@@ -73,7 +71,6 @@ Test it manually to ensure it connects (optional):
 python3 echobox.py
 ```
 (Press Ctrl+C to stop the manual test).
-
 
 ### 4. Create the systemd Service (Power Outage Protection)
 Create a service file to run the script in the background automatically:
@@ -101,7 +98,6 @@ RestartSec=10
 WantedBy=multi-user.target
 ```
 (Save and exit: Ctrl+O, Enter, Ctrl+X)
-
 
 ### 5. Enable and Start the Service
 Enable the script to start on boot and launch it:
