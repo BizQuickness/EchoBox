@@ -107,5 +107,5 @@ sudo systemctl start echobox.service
 ```
 Helpful Commands:
 * View live logs: `journalctl -u echobox.service -f`
-* Stop the bot: sudo systemctl stop echobox.service
-* Restart the bot: sudo systemctl restart echobox.service
+* Stop the bot: `sudo systemctl stop echobox.service`
+* Restart the bot: `sudo systemctl restart echobox.service`
