@@ -17,7 +17,7 @@ It is designed to help users test new nodes and connectivity without overloading
 
 
 
-1. Flash your Meshtastic node (e.g., LILYGO T-Echo, Heltec V3) with the latest firmware.
+1. Flash your Meshtastic node (e.g., LILYGO T-Echo, Heltec V3 or V4) with the latest firmware.
 2. Connect the node directly to your Raspberry Pi using a high-quality data USB cable.
 3. Ensure the node is powered and recognized by the Pi.
 
