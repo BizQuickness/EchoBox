@@ -1,6 +1,6 @@
 # EchoBox - Meshtastic Sentry Node
 
-A robust, server-grade auto-responder script for Meshtastic networks. Designed specifically for headless deployments (like a Raspberry Pi), this script monitors designated public channels or direct messages for a trigger word and replies automatically. 
+A robust, server-grade auto-responder script for Meshtastic networks that can mimic pocket node level replies to "Test" messages. Designed specifically for headless deployments (like a Raspberry Pi), this script monitors designated public channels or direct messages for a trigger word and replies automatically. 
 
 It is designed to help users test new nodes and connectivity without overloading the mesh. It features a thread-safe queue to handle simultaneous pings, intelligent airtime management, dynamic routing, and a self-healing watchdog system for hardware disconnects.
 
