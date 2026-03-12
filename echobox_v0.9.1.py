@@ -10,7 +10,7 @@ import sys
 # --- CONFIGURATION ---
 CITY_NAME = "City Name Here"
 TEST_CHANNEL = 1
-TRIGGER_WORD = "testword"
+TRIGGER_WORD = "echobox"
 INITIAL_DELAY = 5    # Seconds to wait before sending a PUBLIC channel reply
 DM_DELAY = 5         # Seconds to wait before sending a DIRECT MESSAGE reply
 COOLDOWN_DELAY = 15  # Seconds to wait before processing the next person in line
