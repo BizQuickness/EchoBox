@@ -11,10 +11,11 @@ import sys
 CITY_NAME = "Roseville"
 TEST_CHANNEL = 1
 TRIGGER_WORD = "test"
-INITIAL_DELAY = 5    # Seconds to wait before sending a PUBLIC channel reply
-DM_DELAY = 5         # Seconds to wait before sending a DIRECT MESSAGE reply
-COOLDOWN_DELAY = 15  # Seconds to wait before processing the next person in line
-CHANNEL_HELP_ENABLED = False  # Set to True to allow "help" replies in the channel. Set to False if multiple bots are on the same channel to prevent spam!
+INITIAL_DELAY = 5         # Seconds to wait before sending a PUBLIC channel ping reply
+DM_DELAY = 5              # Seconds to wait before sending a DIRECT MESSAGE ping reply
+COOLDOWN_DELAY = 15       # Seconds to wait before processing the next person in line
+CHANNEL_HELP_ENABLED = False  # Set to True to allow "help" replies in the channel. Set to False to prevent spam!
+HELP_DELAY = 5            # Seconds to wait before sending ANY help/instruction reply (Channel or DM)
 # ---------------------
 
 # This is our "To-Do List" (The Queue)
@@ -26,13 +27,13 @@ def worker():
         task = reply_queue.get()
         if task is None: break
         
-        sender_id, display_name, hops, packet_id, is_dm, response_text = task
+        # We unpack the specific wait_time that was passed into the queue
+        sender_id, display_name, packet_id, is_dm, response_text, wait_time = task
         
         route_type = "DIRECT" if is_dm else "CHANNEL"
         print(f"[{CITY_NAME} EchoBox] Processing {route_type} reply for {display_name}...")
         
-        # 1. Choose the correct delay timer
-        wait_time = DM_DELAY if is_dm else INITIAL_DELAY
+        # 1. Use the specific delay timer calculated when the message was received
         time.sleep(wait_time)
         
         try:
@@ -102,25 +103,27 @@ def on_receive(packet, interface):
 
                 # SCENARIO A: They sent the exact trigger word
                 if msg == TRIGGER_WORD:
+                    wait_time = DM_DELAY if is_dm else INITIAL_DELAY
                     response_text = f"✅ {CITY_NAME} EchoBox heard {display_name} (Hops: {hops})"
-                    print(f"📡 [PING] Adding {display_name} to the queue ({route_tag}).")
-                    reply_queue.put((sender_id, display_name, hops, packet_id, is_dm, response_text))
+                    print(f"📡 [PING] Adding {display_name} to the queue ({route_tag}). Delay: {wait_time}s")
+                    reply_queue.put((sender_id, display_name, packet_id, is_dm, response_text, wait_time))
                 
                 # SCENARIO B: They explicitly asked for help
                 elif msg == "help":
-                    # If it is a DM, always help. If it is a channel, check the toggle first!
                     if is_dm or CHANNEL_HELP_ENABLED:
-                        response_text = f"ℹ️ EchoBox: Please send the exact word '{TRIGGER_WORD}' to get a signal report with hop count."
-                        print(f"📡 [HELP] Adding instruction reply for {display_name} ({route_tag}).")
-                        reply_queue.put((sender_id, display_name, hops, packet_id, is_dm, response_text))
+                        wait_time = HELP_DELAY
+                        response_text = f"ℹ️ EchoBox: Please send '{TRIGGER_WORD}' to get a signal report with hop count."
+                        print(f"📡 [HELP] Adding instruction reply for {display_name} ({route_tag}). Delay: {wait_time}s")
+                        reply_queue.put((sender_id, display_name, packet_id, is_dm, response_text, wait_time))
                     else:
                         print(f"🔇 [HELP] Ignored channel help request from {display_name} (Channel help replies are disabled).")
                 
                 # SCENARIO C: They sent something random (Catch-all for DMs ONLY)
                 elif is_dm:
-                    response_text = f"ℹ️ EchoBox: Please send the exact word '{TRIGGER_WORD}' to get a signal report with hop count."
-                    print(f"📡 [HELP] Adding instruction reply for {display_name} ({route_tag}).")
-                    reply_queue.put((sender_id, display_name, hops, packet_id, is_dm, response_text))
+                    wait_time = HELP_DELAY
+                    response_text = f"ℹ️ EchoBox: Please send '{TRIGGER_WORD}' to get a signal report with hop count."
+                    print(f"📡 [HELP] Adding instruction reply for {display_name} ({route_tag}). Delay: {wait_time}s")
+                    reply_queue.put((sender_id, display_name, packet_id, is_dm, response_text, wait_time))
 
     except Exception as e:
         print(f"Error in on_receive: {e}")
